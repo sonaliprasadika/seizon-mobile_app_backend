@@ -2,8 +2,11 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const config = require('./config');
+const dotenv = require('dotenv');
 const studentRoutes = require('./routes/student-routes');
+
+dotenv.config();
+const {PORT,HOST} = process.env
 
 const app = express();
 
@@ -15,4 +18,4 @@ app.use('/api', studentRoutes.routes);
 
 
 
-app.listen(config.port, () => console.log('App is listening on url http://localhost:' + config.port));
+app.listen(PORT, () => console.log('App is listening on url http://'+HOST+':' + PORT));
