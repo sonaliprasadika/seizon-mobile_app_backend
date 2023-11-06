@@ -5,9 +5,23 @@ const User = require('../models/user');
 
 const addUser = async (req, res, next) => {
     try {
-        const data = req.body;
-        await db.collection('Users').add(data);
-        res.send('Record saved successfuly');
+        const userData = req.body;
+        // Create a new User instance using the data from the request body
+        const user = new User(
+        userData.username,
+        userData.firstName,
+        userData.lastName,
+        userData.user_language,
+        userData.height,
+        userData.weight,
+        userData.age,
+        userData.gender,
+        userData.password,
+        userData.user_level,
+        userData.total_steps
+        );
+        const userRef = await db.collection('Users').add(JSON.parse(JSON.stringify(user)));
+    res.send(`User record saved successfully with ID: ${userRef.id}`);
     } catch (error) {
         res.status(400).send(error.message);
     }
