@@ -1,5 +1,5 @@
 const express = require('express');
-const {addAvatar, 
+const {addAvatar,
        getAllAvatars,
        getAvatar,
        updateAvatar,
@@ -8,11 +8,11 @@ const {addAvatar,
 
 const router = express.Router();
 
-router.post('/user', addAvatar);
-router.get('/users', getAllAvatars);
-router.get('/user/:id', getAvatar);
-router.put('/user/:id', updateAvatar);
-router.delete('/user/:id', deleteAvatar);
+router.post('/avatar', addAvatar);
+router.get('/avatars', getAllAvatars);
+router.get('/avatar/:id', getAvatar);
+router.put('/avatar/:id', updateAvatar);
+router.delete('/avatar/:id', deleteAvatar);
 
 
 module.exports = {
