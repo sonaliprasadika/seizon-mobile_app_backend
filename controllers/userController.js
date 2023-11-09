@@ -32,27 +32,23 @@ const getAllUsers = async (req, res, next) => {
         const users = await db.collection('Users');
         const data = await users.get();
         const usersArray = [];
-        if(data.empty) {
-            res.status(404).send('No user record found');
-        }else {
+
+        if (data.empty) {
+            res.status(404).send('No user records found');
+        } else {
             data.forEach(doc => {
-                const user = new User(
-                    doc.id,
-                    doc.data().username,
-                    doc.data().firstName,
-                    doc.data().lastName,
-                    doc.data().user_language,
-                    doc.data().height,
-                    doc.data().weight,
-                    doc.data().age,
-                    doc.data().gender,
-                    doc.data().password,
-                    doc.data().user_level,
-                    doc.data().total_steps,
-                    doc.data().user_language
-                );
-                usersArraysArray.push(user);
+                const userData = {};
+                const docData = doc.data();
+                
+                for (const key in docData) {
+                    if (docData.hasOwnProperty(key)) {
+                        userData[key] = docData[key];
+                    }
+                }
+
+                usersArray.push(userData);
             });
+
             res.send(usersArray);
         }
     } catch (error) {
