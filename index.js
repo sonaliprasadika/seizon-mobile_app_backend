@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/user-routes');
+const goalRoutes = require('./routes/goals-routes');
 
 dotenv.config();
 const {PORT,HOST} = process.env
@@ -15,7 +16,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/api', userRoutes.routes);
-
+app.use('/api', goalRoutes.routes);
 
 
 app.listen(PORT, () => console.log('App is listening on url http://'+HOST+':' + PORT));
