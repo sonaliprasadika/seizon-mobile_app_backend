@@ -10,8 +10,8 @@ const {addGoalByUser,
 const router = express.Router();
 
 router.post('/goal-by-user', addGoalByUser);
-router.get('/goal-by-user/:id', getAllGoalsByUser);
-router.get('/goal-by-user/:id/:goal_id', getGoalbyUser);
+router.get('/goal-by-users/:id', getAllGoalsByUser);
+router.get('/goal-by-user/:id/:g_id', getGoalbyUser);
 router.put('/goal-by-user/:id', updateGoalbyUser);
 router.delete('/goal-by-user/:id', deleteGoalbyUser);
 

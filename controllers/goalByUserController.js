@@ -62,10 +62,9 @@ const getAllGoalsByUser = async (req, res, next) => {
 const getGoalbyUser = async (req, res, next) => {
     try {
         const id = req.params.id;
-        const goal_id = req.params.id;
-        const userSnapshot = await db.collection('Goals-by-user').where('user_id', '==', id).get();
+        const g_id = req.params.g_id;
+        const userSnapshot = await db.collection('Goals-by-user').where('user_id', '==', id).where('goal_id', '==', g_id).get();
 
-        console.log('Number of Documents:', userSnapshot.docs.length);
         console.log('Document Data:', userSnapshot.docs.map(doc => doc.data()));
 
         if (userSnapshot.empty) {
@@ -73,28 +72,26 @@ const getGoalbyUser = async (req, res, next) => {
             return res.status(404).send('No user records found');
         }
 
-        const goals = [];
+        const userDoc = userSnapshot.docs[0]; // Since only getting one document
+        const userData = userDoc.data();
 
-        // Use Promise.all to wait for all asynchronous operations to complete
-        await Promise.all(userSnapshot.docs.map(async (doc) => {
-            const data = doc.data();
+        if (userData.goal_id) {
+            const goal_id = userData.goal_id;
+            console.log('Goal ID:', goal_id);
 
-            if (data.goal_id) {
-                const goal_id = data.goal_id;
-                console.log('Goal ID:', goal_id);
+            const goalSnapshot = await db.collection('Goals').doc(goal_id).get();
 
-                const goalSnapshot = await db.collection('Goals').doc(goal_id).get();
-
-                if (goalSnapshot.exists) {
-                    console.log('Document Data:', goalSnapshot.data());
-                    goals.push(goalSnapshot.data());
-                }
+            if (goalSnapshot.exists) {
+                console.log('Document Data:', goalSnapshot.data());
+                res.send(goalSnapshot.data());
+            } else {
+                console.log(`No goal record found with id: ${goal_id}`);
+                res.status(404).send('No goal record found');
             }
-        }));
-
-        console.log(goals);
-        res.send(goals);
-
+        } else {
+            console.log(`No goal_id found in user record with id: ${id}`);
+            res.status(404).send('No goal_id found in user record');
+        }
     } catch (error) {
         console.error('Error:', error.message);
         res.status(500).send('Internal Server Error');
