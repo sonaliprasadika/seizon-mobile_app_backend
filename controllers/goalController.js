@@ -96,7 +96,7 @@ const getGoalbyUser = async (req, res, next) => {
         console.log('g_id:', g_id);
         console.log('id:', id);
         
-        const querySnapshot = await db.collection('Goals').where('user_id', '==', id).where('goal_id', '==', g_id).get();
+        const querySnapshot = await db.collection('Goals').where('user_id', '==', id).get(g_id);
 
         if (querySnapshot.empty) {
             res.status(404).send('User with the given ID and Goal ID not found');
