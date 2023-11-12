@@ -1,6 +1,7 @@
 const express = require('express');
 const {addGoal, 
        getAllGoals, 
+       getAllGoalsByUser,
        getGoalbyUser,
        updateGoal,
        deleteGoal
@@ -10,7 +11,8 @@ const router = express.Router();
 
 router.post('/goal', addGoal);
 router.get('/goals', getAllGoals);
-router.get('/goal/:id', getGoalbyUser);
+router.get('/goals-by-user/:id', getAllGoalsByUser);
+router.get('/goal-by-user/:id/:g_id', getGoalbyUser);
 router.put('/goal/:id', updateGoal);
 router.delete('/goal/:id', deleteGoal);
 

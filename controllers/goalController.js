@@ -16,7 +16,8 @@ const addGoal = async (req, res, next) => {
         goalData.calories_to_burn,
         );
         const goalRef = await db.collection('Goals').add(JSON.parse(JSON.stringify(goal)));
-    res.send(`User record saved successfully with ID: ${goalRef.id}`);
+        console.log(JSON.parse(JSON.stringify(goal)))
+        res.send(`User record saved successfully with ID: ${goalRef.id}`);
     } catch (error) {
         res.status(400).send(error.message);
     }
@@ -51,20 +52,63 @@ const getAllGoals = async (req, res, next) => {
     }
 }
 
-const getGoalbyUser = async (req, res, next) => {
+const getAllGoalsByUser = async (req, res, next) => {
     try {
-        const id = req.params.id;
-        const user = await db.collection('Goals').doc(id);
-        const data = await user.get();
-        if(!data.exists) {
-            res.status(404).send('User with the given ID not found');
-        }else {
-            res.send(data.data());
+        const userID = req.params.id;
+        const userGoals= await db.collection('Goals').where('user_id', '==', userID).get();
+
+        console.log('Number of Documents:', userGoals.docs.length);
+        console.log('Document Data:', userGoals.docs.map(doc => doc.data()));
+
+        if (userGoals.empty) {
+            console.log(`No user record found with id: ${userID}`);
+            return res.status(404).send('No user records found');
+        }
+        const usersArray = [];
+
+        if (userGoals.empty) {
+            res.status(404).send('No user records found');
+        } else {
+            userGoals.forEach(doc => {
+                const userData = {};
+                const docData = doc.data();
+                
+                for (const key in docData) {
+                    if (docData.hasOwnProperty(key)) {
+                        userData[key] = docData[key];
+                    }
+                }
+
+                usersArray.push(userData);
+            });
+
+            res.send(usersArray);
         }
     } catch (error) {
         res.status(400).send(error.message);
     }
-}
+};
+
+const getGoalbyUser = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const g_id = req.params.g_id;
+        console.log('g_id:', g_id);
+        console.log('id:', id);
+        
+        const querySnapshot = await db.collection('Goals').where('user_id', '==', id).where('goal_id', '==', g_id).get();
+
+        if (querySnapshot.empty) {
+            res.status(404).send('User with the given ID and Goal ID not found');
+        } else {
+            const documentData = querySnapshot.docs[0].data();
+            res.send(documentData);
+        }
+    } catch (error) {
+        console.error('Error:', error.message);
+        res.status(500).send('Internal Server Error');
+    }
+};
 
 const updateGoal = async (req, res, next) => {
     try {
@@ -91,6 +135,7 @@ const deleteGoal = async (req, res, next) => {
 module.exports = {
     addGoal,
     getAllGoals,
+    getAllGoalsByUser,
     getGoalbyUser,
     updateGoal,
     deleteGoal
