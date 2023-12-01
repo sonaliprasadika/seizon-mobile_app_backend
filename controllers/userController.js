@@ -32,7 +32,7 @@ const userRegister = async (req, res, next) => {
     try {
         const userData = req.body;
         // Create a new User instance using the data from the request body
-        const hashedPassword = await hashPassword(userData.password)
+        const hashedPassword = await hashPassword(userData.password);
         const user = new User(
             userData.username,
             userData.firstName,
@@ -68,6 +68,30 @@ const userRegister = async (req, res, next) => {
 
         
     } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
+const userLogin = async (req, res, next) => {
+    try{
+        const userData = req.body;
+        const usersCollection = await db.collection('Users');
+        const querySnapshot = await usersCollection.where('email', '==', userData.email).get();
+        if (querySnapshot.empty) {
+            console.log('No matching documents.');
+        } else {
+            const user = querySnapshot.docs[0].data();
+            const isTrue = await bcrypt.compareSync(userData.password, user.password)
+            if(isTrue === true){
+                var token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET);
+                console.log(token)
+                user.token = token
+                console.log(user)
+                res.status(200).send(user)
+            }
+        }        
+    }catch(error){
+        console.log('catch log')
         res.status(400).send(error.message);
     }
 }
@@ -153,6 +177,7 @@ const deleteUser = async (req, res, next) => {
 
 module.exports = {
     userRegister,
+    userLogin,
     getAllUsers,
     getUser,
     updateUser,
