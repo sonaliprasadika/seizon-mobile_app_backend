@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const userRoutes = require('./routes/user-routes');
 const goalRoutes = require('./routes/goals-routes');
 const userAvatarRoutes = require('./routes/avatar-routes');
+const levelRoutes = require('./routes/level-routes');
 
 dotenv.config();
 const {PORT,HOST} = process.env
@@ -19,5 +20,6 @@ app.use(bodyParser.json());
 app.use('/api', userRoutes.routes);
 app.use('/api', goalRoutes.routes);
 app.use('/api', userAvatarRoutes.routes);
+app.use('/api', levelRoutes.routes);
 
 app.listen(PORT, () => console.log('App is listening on url http://'+HOST+':' + PORT));
