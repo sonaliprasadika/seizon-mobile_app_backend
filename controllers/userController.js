@@ -6,28 +6,6 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const authenticate = (req, res, next) => {
-    const token = req.header('Authorization');
-
-    console.log('Received token:', token);
-
-    if (!token) {
-        console.log('Unauthorized: No token provided');
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-
-    try {
-        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        console.log('Decoded user:', decoded);
-        req.user = decoded;
-        next();
-    } catch (error) {
-        console.log('Forbidden: Invalid token');
-        return res.status(403).json({ message: 'Forbidden' });
-    }
-};
-
-  
 const userRegister = async (req, res, next) => {
     try {
         const userData = req.body;
@@ -78,20 +56,21 @@ const userLogin = async (req, res, next) => {
         const usersCollection = await db.collection('Users');
         const querySnapshot = await usersCollection.where('email', '==', userData.email).get();
         if (querySnapshot.empty) {
-            console.log('No matching documents.');
+            res.status(404).send('Invalid user email');
         } else {
             const user = querySnapshot.docs[0].data();
-            const isTrue = await bcrypt.compareSync(userData.password, user.password)
+            const isTrue = bcrypt.compareSync(userData.password, user.password)
             if(isTrue === true){
                 var token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET);
                 console.log(token)
                 user.token = token
                 console.log(user)
                 res.status(200).send(user)
+            }else{
+                res.status(404).send('Invalid password'); 
             }
         }        
     }catch(error){
-        console.log('catch log')
         res.status(400).send(error.message);
     }
 }
