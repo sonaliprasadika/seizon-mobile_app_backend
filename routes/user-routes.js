@@ -1,18 +1,20 @@
 const express = require('express');
-const {addAvatar, 
-       getAllAvatars,
-       getAvatar,
-       updateAvatar,
-       deleteAvatar
-      } = require('../controllers/avatarController');
+// const { authenticate } = require('../controllers/userController');
+const {addUser,
+        getAllUsers,
+        getUser,
+        updateUser,
+        deleteUser,
+        userRegister
+      } = require('../controllers/userController');
 
 const router = express.Router();
 
-router.post('/user', addAvatar);
-router.get('/users', getAllAvatars);
-router.get('/user/:id', getAvatar);
-router.put('/user/:id', updateAvatar);
-router.delete('/user/:id', deleteAvatar);
+router.post('/user/register', userRegister);
+router.get('/users', getAllUsers);
+router.get('/user/:id', getUser);
+router.put('/user/:id', updateUser);
+router.delete('/user/:id', deleteUser);
 
 
 module.exports = {
