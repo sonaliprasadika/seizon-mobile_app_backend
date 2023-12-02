@@ -20,14 +20,32 @@ const addLevel = async (req, res) => {
     }
 }
 
-// const getAllLevels = async (req, res) => {
+const getAllLevels = async (req, res) => {
     try {
-        const levelsSnapshot = await db.collection('levels').get();
-        const levels = levelsSnapshot.docs.map(doc => doc.data());
-        res.json(levels);
+        const users = await db.collection('Goals');
+        const data = await users.get();
+        const usersArray = [];
+
+        if (data.empty) {
+            res.status(404).send('No user records found');
+        } else {
+            data.forEach(doc => {
+                const userData = {};
+                const docData = doc.data();
+                
+                for (const key in docData) {
+                    if (docData.hasOwnProperty(key)) {
+                        userData[key] = docData[key];
+                    }
+                }
+
+                usersArray.push(userData);
+            });
+
+            res.send(usersArray);
+        }
     } catch (error) {
-        console.error('Error getting levels', error);
-        res.status(500).json({ error: 'Error getting levels' });
+        res.status(400).send(error.message);
     }
 }
 
