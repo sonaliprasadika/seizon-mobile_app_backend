@@ -93,8 +93,6 @@ const getGoalbyUser = async (req, res, next) => {
     try {
         const id = req.params.id;
         const g_id = req.params.g_id;
-        console.log('g_id:', g_id);
-        console.log('id:', id);
         
         const querySnapshot = await db.collection('Goals').where('user_id', '==', id).get(g_id);
 
@@ -106,7 +104,7 @@ const getGoalbyUser = async (req, res, next) => {
         }
     } catch (error) {
         console.error('Error:', error.message);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send('Error updating level');
     }
 };
 

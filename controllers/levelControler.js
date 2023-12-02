@@ -22,7 +22,7 @@ const addLevel = async (req, res) => {
 
 const getAllLevels = async (req, res) => {
     try {
-        const users = await db.collection('Goals');
+        const users = await db.collection('Levels');
         const data = await users.get();
         const usersArray = [];
 
@@ -41,7 +41,6 @@ const getAllLevels = async (req, res) => {
 
                 usersArray.push(userData);
             });
-
             res.send(usersArray);
         }
     } catch (error) {
@@ -49,48 +48,46 @@ const getAllLevels = async (req, res) => {
     }
 }
 
-// static async getLevelById(req, res) {
-//     const levelId = req.params.id;
-//     try {
-//         const levelDoc = await db.collection('levels').doc(levelId).get();
-//         if (!levelDoc.exists) {
-//             res.status(404).json({ error: 'Level not found' });
-//         } else {
-//             res.json(levelDoc.data());
-//         }
-//     } catch (error) {
-//         console.error('Error getting level', error);
-//         res.status(500).json({ error: 'Error getting level' });
-//     }
-// }
+const getLevelById = async (req, res) => {
+    const levelId = req.params.id;
+    try {
+        const levelDoc = await db.collection('Levels').doc(levelId).get();
+        if (!levelDoc.exists) {
+            res.status(404).json({ error: 'Level not found' });
+        } else {
+            res.json(levelDoc.data());
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Error getting level' });
+    }
+}
 
-// static async updateLevel(req, res) {
-//     const levelId = req.params.id;
-//     const { xp_points, level_challenge_id, unlockable_item_ids } = req.body;
-//     const updatedLevel = new Level(levelId, xp_points, level_challenge_id, unlockable_item_ids);
+const updateLevel = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const data = req.body;
+        const user =  await db.collection('Levels').doc(id);
+        await user.update(data);
+        res.send('User record updated successfuly');        
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
 
-//     try {
-//         await db.collection('levels').doc(levelId).set(updatedLevel, { merge: true });
-//         res.json(updatedLevel);
-//     } catch (error) {
-//         console.error('Error updating level', error);
-//         res.status(500).json({ error: 'Error updating level' });
-//     }
-// }
-
-// static async deleteLevel(req, res) {
-//     const levelId = req.params.id;
-//     try {
-//         await db.collection('levels').doc(levelId).delete();
-//         res.json({ message: `Level ${levelId} deleted successfully` });
-//     } catch (error) {
-//         console.error('Error deleting level', error);
-//         res.status(500).json({ error: 'Error deleting level' });
-//     }
-// }
-
-
+const deleteLevel = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        await db.collection('Levels').doc(id).delete();
+        res.send('Record deleted successfuly');
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
 
 module.exports = {
-    addLevel
+    addLevel,
+    getAllLevels,
+    getLevelById,
+    updateLevel,
+    deleteLevel
 }
