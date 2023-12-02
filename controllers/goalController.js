@@ -7,14 +7,14 @@ const addGoal = async (req, res, next) => {
         const goalData = req.body;
         // Create a new User instance using the data from the request body
         const goal = new Goals(
-        goalData.goal_id,
-        goalData.user_id,
-        goalData.goal_basis,
-        goalData.steps_per_day,
-        goalData.steps_per_week,
-        goalData.days,
-        goalData.calories_to_burn,
-        );
+            goalData.goal_id,
+            goalData.user_id,
+            goalData.goal_basis,
+            goalData.steps_per_day,
+            goalData.steps_per_week,
+            goalData.days,
+            goalData.calories_to_burn,
+            );
         const goalRef = await db.collection('Goals').add(JSON.parse(JSON.stringify(goal)));
         console.log(JSON.parse(JSON.stringify(goal)))
         res.send(`User record saved successfully with ID: ${goalRef.id}`);
