@@ -21,15 +21,15 @@ const addLevel = async (req, res) => {
 }
 
 // const getAllLevels = async (req, res) => {
-//     try {
-//         const levelsSnapshot = await db.collection('levels').get();
-//         const levels = levelsSnapshot.docs.map(doc => doc.data());
-//         res.json(levels);
-//     } catch (error) {
-//         console.error('Error getting levels', error);
-//         res.status(500).json({ error: 'Error getting levels' });
-//     }
-// }
+    try {
+        const levelsSnapshot = await db.collection('levels').get();
+        const levels = levelsSnapshot.docs.map(doc => doc.data());
+        res.json(levels);
+    } catch (error) {
+        console.error('Error getting levels', error);
+        res.status(500).json({ error: 'Error getting levels' });
+    }
+}
 
 // static async getLevelById(req, res) {
 //     const levelId = req.params.id;
