@@ -1,23 +1,29 @@
 'use strict';
-const db = require('../config/db');
-const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const authenticate = (req, res, next) => {
-    const token = req.header('Authorization');
+const authMiddleware = (req, res, next) => {
+    console.log(req.path)
+    if (req.path === '/api/user/register') {
+        return next(); // Skip to the next route
+    }
 
-    console.log('Received token:', token);
+    if (req.path === '/api/user/login') {
+        return next(); // Skip to the next route
+    }
 
-    if (!token) {
+    const bearToken = req.header('Authorization');
+
+    if (!bearToken) {
         console.log('Unauthorized: No token provided');
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
     try {
+        const token = bearToken.split(' ')[1];
         const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        console.log('Decoded user:', decoded);
+        console.log(decoded);
         req.user = decoded;
         next();
     } catch (error) {
@@ -25,5 +31,8 @@ const authenticate = (req, res, next) => {
         return res.status(403).json({ message: 'Forbidden' });
     }
 };
+module.exports = {
+    authMiddleware
+}
 
 
