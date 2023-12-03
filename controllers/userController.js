@@ -55,16 +55,17 @@ const userLogin = async (req, res, next) => {
         const userData = req.body;
         const usersCollection = await db.collection('Users');
         const querySnapshot = await usersCollection.where('email', '==', userData.email).get();
+    
         if (querySnapshot.empty) {
             res.status(404).send('Invalid user email');
         } else {
-            const user = querySnapshot.docs[0].data();
+            const userDoc = querySnapshot.docs[0];
+            const user = userDoc.data(); 
             const isTrue = bcrypt.compareSync(userData.password, user.password)
             if(isTrue === true){
-                var token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET);
-                console.log(token)
+                const userId = userDoc.id;
+                var token = jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET);
                 user.token = token
-                console.log(user)
                 res.status(200).send(user)
             }else{
                 res.status(404).send('Invalid password'); 

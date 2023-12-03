@@ -1,23 +1,20 @@
 'use strict';
 const db = require('../config/db');
-const Goals = require('../models/goals');
+const UserLevel = require('../models/userLevel');
 
-const addGoal = async (req, res, next) => {
+const addUserLevel = async (req, res, next) => {
     try {
-        const goalData = req.body;
+        const userLevelData = req.body;
         // Create a new User instance using the data from the request body
-        const goal = new Goals(
-            goalData.goal_id,
-            goalData.user_id,
-            goalData.goal_basis,
-            goalData.steps_per_day,
-            goalData.steps_per_week,
-            goalData.days,
-            goalData.calories_to_burn,
+        const userLevel = new UserLevel(
+            userLevelData.user_level_id,
+            userLevelData.user_id,
+            userLevelData.level_id,
+            userLevelData.collected_points
             );
-        const goalRef = await db.collection('Goals').add(JSON.parse(JSON.stringify(goal)));
+        const userLevelRef = await db.collection('UserLevel').add(JSON.parse(JSON.stringify(userLevel)));
         console.log(JSON.parse(JSON.stringify(goal)))
-        res.send(`User record saved successfully with ID: ${goalRef.id}`);
+        res.send(`User record saved successfully with ID: ${userLevelRef.id}`);
     } catch (error) {
         res.status(400).send(error.message);
     }
@@ -131,7 +128,7 @@ const deleteGoal = async (req, res, next) => {
 }
 
 module.exports = {
-    addGoal,
+    addUserLevel,
     getAllGoals,
     getAllGoalsByUser,
     getGoalbyUser,
