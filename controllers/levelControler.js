@@ -7,7 +7,6 @@ const addLevel = async (req, res) => {
         const newLevelData = req.body;
         const newLevel = new Level(
             newLevelData.level_id, 
-            newLevelData.key,
             newLevelData.xp_points, 
             newLevelData.level_challenge_id, 
             newLevelData.unlockable_item_ids
