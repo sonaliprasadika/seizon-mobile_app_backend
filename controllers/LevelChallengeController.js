@@ -24,9 +24,9 @@ const addLevelChallenge = async (req, res, next) => {
     }
 }
 
-const getAllGoals = async (req, res, next) => {
+const getAllLevelChallenges = async (req, res, next) => {
     try {
-        const users = await db.collection('Goals');
+        const users = await db.collection('LevelChallenge');
         const data = await users.get();
         const usersArray = [];
 
@@ -53,24 +53,17 @@ const getAllGoals = async (req, res, next) => {
     }
 }
 
-const getAllGoalsByUser = async (req, res, next) => {
+const getLevelChallengesByLevel = async (req, res, next) => {
     try {
-        const userID = req.params.id;
-        const userGoals= await db.collection('Goals').where('user_id', '==', userID).get();
-
-        console.log('Number of Documents:', userGoals.docs.length);
-        console.log('Document Data:', userGoals.docs.map(doc => doc.data()));
-
-        if (userGoals.empty) {
-            console.log(`No user record found with id: ${userID}`);
-            return res.status(404).send('No user records found');
-        }
+        const level_id = req.params.id;
+        const users = await db.collection('LevelChallenge').where('level_id', '==', level_id);
+        const data = await users.get();
         const usersArray = [];
 
-        if (userGoals.empty) {
+        if (data.empty) {
             res.status(404).send('No user records found');
         } else {
-            userGoals.forEach(doc => {
+            data.forEach(doc => {
                 const userData = {};
                 const docData = doc.data();
                 
@@ -90,30 +83,11 @@ const getAllGoalsByUser = async (req, res, next) => {
     }
 };
 
-const getGoalbyUser = async (req, res, next) => {
-    try {
-        const id = req.params.id;
-        const g_id = req.params.g_id;
-        
-        const querySnapshot = await db.collection('Goals').where('user_id', '==', id).get(g_id);
-
-        if (querySnapshot.empty) {
-            res.status(404).send('User with the given ID and Goal ID not found');
-        } else {
-            const documentData = querySnapshot.docs[0].data();
-            res.send(documentData);
-        }
-    } catch (error) {
-        console.error('Error:', error.message);
-        res.status(500).send('Error updating level');
-    }
-};
-
-const updateGoal = async (req, res, next) => {
+const updateLevelChallenge = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = req.body;
-        const user =  await db.collection('Goals').doc(id);
+        const user =  await db.collection('LevelChallenge').doc(id);
         await user.update(data);
         res.send('User record updated successfuly');        
     } catch (error) {
@@ -121,10 +95,10 @@ const updateGoal = async (req, res, next) => {
     }
 }
 
-const deleteGoal = async (req, res, next) => {
+const deleteLevelChallenge = async (req, res, next) => {
     try {
         const id = req.params.id;
-        await db.collection('Goals').doc(id).delete();
+        await db.collection('LevelChallenge').doc(id).delete();
         res.send('Record deleted successfuly');
     } catch (error) {
         res.status(400).send(error.message);
@@ -133,9 +107,8 @@ const deleteGoal = async (req, res, next) => {
 
 module.exports = {
     addLevelChallenge,
-    getAllGoals,
-    getAllGoalsByUser,
-    getGoalbyUser,
-    updateGoal,
-    deleteGoal
+    getAllLevelChallenges,
+    getLevelChallengesByLevel,
+    updateLevelChallenge,
+    deleteLevelChallenge
 }
