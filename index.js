@@ -10,6 +10,7 @@ const { authMiddleware } = require('./middleware/authMiddleware');
 const levelRoutes = require('./routes/level-routes');
 const UserLevelRoutes = require('./routes/userLevel-routes');
 const LevelChallengeRoutes = require('./routes/levelChallenge-routes');
+const swagger = require('./config/swagger');
 
 dotenv.config();
 const {PORT,HOST} = process.env
@@ -19,6 +20,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
+
+swagger(app)
 
 app.use(authMiddleware);
 app.use('/api', userRoutes.routes);
