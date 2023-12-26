@@ -5,10 +5,11 @@ const Goals = require('../models/goals');
 const addGoal = async (req, res, next) => {
     try {
         const goalData = req.body;
+        const userID = req.user.id;
         // Create a new User instance using the data from the request body
         const goal = new Goals(
             goalData.goal_id,
-            goalData.user_id,
+            userID,
             goalData.goal_basis,
             goalData.steps_per_day,
             goalData.steps_per_week,
@@ -54,11 +55,8 @@ const getAllGoals = async (req, res, next) => {
 
 const getAllGoalsByUser = async (req, res, next) => {
     try {
-        const userID = req.params.id;
+        const userID = req.user.id;
         const userGoals= await db.collection('Goals').where('user_id', '==', userID).get();
-
-        console.log('Number of Documents:', userGoals.docs.length);
-        console.log('Document Data:', userGoals.docs.map(doc => doc.data()));
 
         if (userGoals.empty) {
             console.log(`No user record found with id: ${userID}`);
@@ -91,7 +89,7 @@ const getAllGoalsByUser = async (req, res, next) => {
 
 const getGoalbyUser = async (req, res, next) => {
     try {
-        const id = req.params.id;
+        const id = req.user.id;
         const g_id = req.params.g_id;
         
         const querySnapshot = await db.collection('Goals').where('user_id', '==', id).get(g_id);

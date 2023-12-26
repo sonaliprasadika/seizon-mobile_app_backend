@@ -11,8 +11,8 @@ const router = express.Router();
 
 router.post('/goal', addGoal);
 router.get('/goals', getAllGoals);
-router.get('/goals-by-user/:id', getAllGoalsByUser);
-router.get('/goal-by-user/:id/:g_id', getGoalbyUser);
+router.get('/goals-by-user', getAllGoalsByUser);
+router.get('/goal-by-user/:g_id', getGoalbyUser);
 router.put('/goal/:id', updateGoal);
 router.delete('/goal/:id', deleteGoal);
 
