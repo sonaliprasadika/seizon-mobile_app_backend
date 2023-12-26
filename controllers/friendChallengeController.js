@@ -4,7 +4,6 @@ const FriendChallenge = require('../models/friendChallenge');
 
 const addFriendChallenge = async (req, res, next) => {
     try {
-        console.log('sonali')
         const friendChallengeData = req.body;
         // Create a new User instance using the data from the request body
         const friendChallenge = new FriendChallenge(
