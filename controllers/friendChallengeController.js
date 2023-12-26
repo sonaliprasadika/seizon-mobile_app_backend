@@ -4,18 +4,19 @@ const FriendChallenge = require('../models/friendChallenge');
 
 const addFriendChallenge = async (req, res, next) => {
     try {
+        console.log('sonali')
         const friendChallengeData = req.body;
         // Create a new User instance using the data from the request body
         const friendChallenge = new FriendChallenge(
-            friendChallengeData.friendChallengeId,
-            friendChallengeData.challengeName,
-            friendChallengeData.challengeType,
-            friendChallengeData.startDate,
-            friendChallengeData.endDate,
-            friendChallengeData.friendId,
-            friendChallengeData.challengeDescription,
+            friendChallengeData.challenge_id,
+            friendChallengeData.challenge_name,
+            friendChallengeData.challenge_type,
+            friendChallengeData.start_date,
+            friendChallengeData.end_date,
+            friendChallengeData.friend_id,
+            friendChallengeData.challenge_description,
             friendChallengeData.duration,
-            friendChallengeData.isReceived,
+            friendChallengeData.is_received,
             );
         const friendChallengeRef = await db.collection('FriendChallenge').add(JSON.parse(JSON.stringify(friendChallenge)));
         console.log(JSON.parse(JSON.stringify(friendChallenge)))
@@ -28,7 +29,7 @@ const addFriendChallenge = async (req, res, next) => {
 const getAllFriendChallengesByFriendId = async (req, res, next) => {
     try {
         const friendId = req.params.id;
-        const users = await db.collection('FriendChallenge').where('friend_id', '==', friendId);
+        const users = await db.collection('FriendChallenge');
         const data = await users.get();
         const usersArray = [];
 
