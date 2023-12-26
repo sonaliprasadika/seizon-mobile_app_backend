@@ -1,8 +1,8 @@
 const Challenge = require('./challenge');
 
 class CommonChallenge extends Challenge {
-  constructor(challengeId, challengeName, startDate, endDate) {
-    super(challengeId, challengeName, 'common', startDate, endDate);
+  constructor(challenge_id, challenge_name, challenge_type, start_date, end_date) {
+    super(challenge_id, challenge_name, challenge_type, start_date, end_date);
   }
 }
 

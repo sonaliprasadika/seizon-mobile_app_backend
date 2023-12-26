@@ -1,10 +1,10 @@
 class Challenge {
-    constructor(challengeId, challengeName, challengeType, startDate, endDate) {
-      this.challenge_id = challengeId;
-      this.challenge_name = challengeName;
-      this.challenge_type = challengeType;
-      this.start_date = startDate;
-      this.end_date = endDate;
+    constructor(challenge_id, challenge_name, challenge_type, start_date, end_date) {
+      this.challenge_id = challenge_id;
+      this.challenge_name = challenge_name;
+      this.challenge_type = challenge_type;
+      this.start_date = start_date;
+      this.end_date = end_date;
     }
   }
   

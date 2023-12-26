@@ -1,10 +1,10 @@
 const Challenge = require('./challenge');
 
 class LevelChallenge extends Challenge {
-  constructor(challengeId, challengeName, challengeType, startDate, endDate, levelId, challengeDescription, duration) {
-    super(challengeId, challengeName, challengeType, startDate, endDate);
-    this.level_id = levelId;
-    this.challenge_description = challengeDescription;
+  constructor(challenge_id, challenge_name, challenge_type, start_date, end_date, level_id, challenge_description, duration) {
+    super(challenge_id, challenge_name, challenge_type, start_date, end_date);
+    this.level_id = level_id;
+    this.challenge_description = challenge_description;
     this.duration = duration;
   }
 }

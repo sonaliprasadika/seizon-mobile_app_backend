@@ -7,13 +7,13 @@ const addLevelChallenge = async (req, res, next) => {
         const levelChallengeData = req.body;
         // Create a new User instance using the data from the request body
         const levelChallenge = new LevelChallenge(
-            levelChallengeData.challengeId,
-            levelChallengeData.challengeName,
-            levelChallengeData.challengeType,
-            levelChallengeData.startDate,
-            levelChallengeData.endDate,
-            levelChallengeData.levelId,
-            levelChallengeData.challengeDescription,
+            levelChallengeData.challenge_id,
+            levelChallengeData.challenge_name,
+            levelChallengeData.challenge_type,
+            levelChallengeData.start_date,
+            levelChallengeData.end_date,
+            levelChallengeData.level_id,
+            levelChallengeData.challenge_description,
             levelChallengeData.duration,
             );
         const levelChallengeRef = await db.collection('LevelChallenge').add(JSON.parse(JSON.stringify(levelChallenge)));

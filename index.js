@@ -11,6 +11,9 @@ const levelRoutes = require('./routes/level-routes');
 const UserLevelRoutes = require('./routes/userLevel-routes');
 const LevelChallengeRoutes = require('./routes/levelChallenge-routes');
 const swagger = require('./config/swagger');
+const FriendChallenge = require('./models/friendChallenge');
+const friendChallengeRoutes = require('./routes/friendChallenge-routes');
+const commonChallengeRoutes = require('./routes/commonChallenge-routes');
 
 dotenv.config();
 const {PORT,HOST} = process.env
@@ -30,5 +33,7 @@ app.use('/api', userAvatarRoutes.routes);
 app.use('/api', levelRoutes.routes);
 app.use('/api', UserLevelRoutes.routes);
 app.use('/api', LevelChallengeRoutes.routes);
+app.use('/api', friendChallengeRoutes.routes);
+app.use('/api', commonChallengeRoutes.routes);
 
 app.listen(PORT, () => console.log('App is listening on url http://'+HOST+':' + PORT));
