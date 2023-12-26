@@ -49,7 +49,7 @@ const getAllAvatars = async (req, res, next) => {
 
 const getAvatar = async (req, res, next) => {
     try {
-        const id = req.params.id;
+        const id = req.user.id;
         const user = await db.collection('Avatars').doc(id);
         const data = await user.get();
         if(!data.exists) {

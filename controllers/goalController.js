@@ -58,9 +58,6 @@ const getAllGoalsByUser = async (req, res, next) => {
         const userID = req.user.id;
         const userGoals= await db.collection('Goals').where('user_id', '==', userID).get();
 
-        console.log('Number of Documents:', userGoals.docs.length);
-        console.log('Document Data:', userGoals.docs.map(doc => doc.data()));
-
         if (userGoals.empty) {
             console.log(`No user record found with id: ${userID}`);
             return res.status(404).send('No user records found');

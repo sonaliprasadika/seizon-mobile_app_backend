@@ -9,7 +9,7 @@ const {addFriendChallenge,
 const router = express.Router();
 
 router.post('/freindChallenge', addFriendChallenge);
-router.get('/freindChallenge-by-friend/:id/', getAllFriendChallengesByFriendId);
+router.get('/freindChallenges-by-friend/:id', getAllFriendChallengesByFriendId);
 router.get('/freindChallenge-by-friend/:id/:freind_id', getFriendChallengebyFriendId);
 router.put('/freindChallenge/:id', updateFriendChallenge);
 router.delete('/freindChallenge/:id', deleteFriendChallenge);

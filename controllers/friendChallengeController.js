@@ -28,14 +28,18 @@ const addFriendChallenge = async (req, res, next) => {
 const getAllFriendChallengesByFriendId = async (req, res, next) => {
     try {
         const friendId = req.params.id;
-        const users = await db.collection('FriendChallenge');
-        const data = await users.get();
+        const userGoals= await db.collection('FriendChallenge').where('friend_id', '==', Number(friendId)).get();
+
+        if (userGoals.empty) {
+            console.log(`No user record found with id: ${friendId}`);
+            return res.status(404).send('No user records found');
+        }
         const usersArray = [];
 
-        if (data.empty) {
+        if (userGoals.empty) {
             res.status(404).send('No user records found');
         } else {
-            data.forEach(doc => {
+            userGoals.forEach(doc => {
                 const userData = {};
                 const docData = doc.data();
                 
@@ -59,7 +63,9 @@ const getFriendChallengebyFriendId = async (req, res, next) => {
     try {
         const challengeId = req.params.id;
         const friendId = req.params.freind_id;
-        const querySnapshot = await db.collection('FriendChallenge').where('friend_id', '==', friendId).get(challengeId);
+        console.log(challengeId)
+        console.log(typeof friendId)
+        const querySnapshot = await db.collection('FriendChallenge').where('friend_id', '==', Number(friendId)).get(challengeId);
         if (querySnapshot.empty) {
             res.status(404).send('Challenge with the given challenge_Id and friend_Id not found');
         } else {
