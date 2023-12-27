@@ -9,14 +9,6 @@ const options = {
         version: "0.1.0",
         description:
           "This is Seizon API application made with Express and documented with Swagger",
-        license: {
-          name: "MIT",
-          url: "https://spdx.org/licenses/MIT.html",
-        },
-        contact: {
-          name: "sonali",
-          email: "sonaliprasadika077@gmail.com",
-        },
       },
       servers: [
         {
