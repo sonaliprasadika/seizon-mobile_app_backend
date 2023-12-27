@@ -10,9 +10,15 @@ const {
       } = require('../controllers/userController');
 
 const router = express.Router();
+
+//User Schema
 /**
  * @swagger
  * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
  *   schemas:
  *     User:
  *       type: object
@@ -99,6 +105,9 @@ const router = express.Router();
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/User'
+ *             example:
+ *              email: john.doe@example.com
+ *              password: "12345678"
  *     responses:
  *       200:
  *         description: The user has been registered.
@@ -111,6 +120,8 @@ const router = express.Router();
  * /api/users:
  *   get:
  *     summary: List of all users
+ *     security:
+ *       - bearerAuth: []
  *     tags: [User]
  *     responses:
  *       200:
@@ -121,7 +132,76 @@ const router = express.Router();
  *               type: array
  *               items:
  *                $ref: '#/components/schemas/User'
- *
+ * /api/user/{id}:
+ *   get:
+ *     summary: Get specific user by user id
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
+ *     responses:
+ *       200:
+ *         description: Get a user by user id.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                $ref: '#/components/schemas/User'
+ *   put:
+ *     summary: Update Specific user by user id
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
+ *     responses:
+ *       200:
+ *         description: update user by user id.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                $ref: '#/components/schemas/User'
+ *   delete:
+ *     summary: Delete Specific user by user id
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
+ *     responses:
+ *       200:
+ *         description: delete user by user id.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                $ref: '#/components/schemas/User'
  */
 router.post('/user/register', userRegister);
 router.post('/user/login', userLogin);
