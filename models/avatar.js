@@ -1,7 +1,7 @@
 class Avatar {
-    constructor(avatar_name, avatar_image_url) {
-            this.user_id = avatar_name;
-            this.avatar_image_url = avatar_image_url;
+    constructor(user_id, gender) {
+            this.user_id = user_id;
+            this.gender = gender;
     }
 }
 
