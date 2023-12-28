@@ -29,16 +29,16 @@ const router = express.Router();
  *           type: string
  *           description: The goal type (Daily or Weekly)
  *         steps_per_day:
- *           type: boolean
+ *           type: integer
  *           description: Total number of steps per day
  *         steps_per_week:
- *           type: string
+ *           type: integer
  *           description: Total number of steps per week
  *         days:
  *           type: string
  *           description: To achieve this goal, which days of the week should be used? (Monday, Tuesday, Wednesday,..)
  *         calories_to_burn:
- *           type: float
+ *           type: integer
  *           description: The total amount of calories should be burned in the goal
  *       example:
  *         goal_basis: Daily

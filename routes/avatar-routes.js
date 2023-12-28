@@ -1,6 +1,5 @@
 const express = require('express');
 const {addAvatar,
-       getAllAvatars,
        getAvatar,
        updateAvatar,
        deleteAvatar
@@ -9,8 +8,7 @@ const {addAvatar,
 const router = express.Router();
 
 router.post('/avatar', addAvatar);
-router.get('/avatars', getAllAvatars);
-router.get('/avatar/:id', getAvatar);
+router.get('/avatar', getAvatar);
 router.put('/avatar/:id', updateAvatar);
 router.delete('/avatar/:id', deleteAvatar);
 

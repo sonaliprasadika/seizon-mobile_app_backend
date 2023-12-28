@@ -6,10 +6,11 @@ const User = require('../models/avatar');
 const addAvatar = async (req, res, next) => {
     try {
         const AvatarData = req.body;
+        const userID = req.user.id;
         // Create a new User instance using the data from the request body
         const avatar = new User(
-        AvatarData.avatar_name,
-        AvatarData.avatar_image_url
+        userID,
+        AvatarData.gender
         );
         const userRef = await db.collection('Avatars').add(JSON.parse(JSON.stringify(avatar)));
     res.send(`User record saved successfully with ID: ${userRef.id}`);
@@ -18,49 +19,24 @@ const addAvatar = async (req, res, next) => {
     }
 }
 
-const getAllAvatars = async (req, res, next) => {
-    try {
-        const users = await db.collection('Avatars');
-        const data = await users.get();
-        const usersArray = [];
-
-        if (data.empty) {
-            res.status(404).send('No user records found');
-        } else {
-            data.forEach(doc => {
-                const userData = {};
-                const docData = doc.data();
-                
-                for (const key in docData) {
-                    if (docData.hasOwnProperty(key)) {
-                        userData[key] = docData[key];
-                    }
-                }
-
-                usersArray.push(userData);
-            });
-
-            res.send(usersArray);
-        }
-    } catch (error) {
-        res.status(400).send(error.message);
-    }
-}
-
 const getAvatar = async (req, res, next) => {
     try {
         const id = req.user.id;
-        const user = await db.collection('Avatars').doc(id);
-        const data = await user.get();
-        if(!data.exists) {
-            res.status(404).send('User with the given ID not found');
-        }else {
-            res.send(data.data());
+        
+        const querySnapshot = await db.collection('Avatars').where('user_id', '==', id).get();
+
+        if (querySnapshot.empty) {
+            res.status(404).send('Avatar not found');
+        } else {
+            const documentData = querySnapshot.docs[0].data();
+            res.send(documentData);
         }
     } catch (error) {
-        res.status(400).send(error.message);
+        console.error('Error:', error.message);
+        res.status(500).send('Error updating level');
     }
-}
+};
+
 
 const updateAvatar = async (req, res, next) => {
     try {
@@ -86,7 +62,6 @@ const deleteAvatar = async (req, res, next) => {
 
 module.exports = {
     addAvatar,
-    getAllAvatars,
     getAvatar,
     updateAvatar,
     deleteAvatar
