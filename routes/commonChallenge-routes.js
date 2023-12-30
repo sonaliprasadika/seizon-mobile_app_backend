@@ -68,7 +68,7 @@ const router = express.Router();
  *         description: Server error
  * /api/commonChallenge/{id}:
  *   get:
- *     summary: List of all commonChallenges
+ *     summary: Get a commonChallenge
  *     security:
  *       - bearerAuth: []
  *     tags: [CommonChallenge]
