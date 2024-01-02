@@ -15,6 +15,8 @@ const FriendChallenge = require('./models/friendChallenge');
 const friendChallengeRoutes = require('./routes/friendChallenge-routes');
 const commonChallengeRoutes = require('./routes/commonChallenge-routes');
 const userChallengeRoutes = require('./routes/userChallenge-routes')
+const mountainRoutes = require('./routes/mountain-routes')
+const userMountainRoutes = require('./routes/userMountain-routes')
 
 dotenv.config();
 const {PORT,HOST} = process.env
@@ -31,6 +33,8 @@ app.use(authMiddleware);
 app.use('/api', userRoutes.routes);
 app.use('/api', goalRoutes.routes);
 app.use('/api', userAvatarRoutes.routes);
+app.use('/api', mountainRoutes.routes);
+app.use('/api', userMountainRoutes.routes);
 app.use('/api', levelRoutes.routes);
 app.use('/api', UserLevelRoutes.routes);
 app.use('/api', LevelChallengeRoutes.routes);

@@ -5,6 +5,7 @@ dotenv.config();
 
 const authMiddleware = (req, res, next) => {
     console.log(req.path)
+    
     if (req.path === '/api/user/register') {
         return next(); // Skip to the next route
     }
@@ -23,7 +24,6 @@ const authMiddleware = (req, res, next) => {
     try {
         const token = bearToken.split(' ')[1];
         const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        console.log(decoded);
         req.user = decoded;
         next();
     } catch (error) {
