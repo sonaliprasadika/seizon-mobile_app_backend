@@ -16,6 +16,7 @@ const addFriendChallenge = async (req, res, next) => {
             friendChallengeData.challenge_description,
             friendChallengeData.duration,
             friendChallengeData.is_received,
+            friendChallengeData.xp_points,
             );
         const friendChallengeRef = await db.collection('FriendChallenge').add(JSON.parse(JSON.stringify(friendChallenge)));
         console.log(JSON.parse(JSON.stringify(friendChallenge)))

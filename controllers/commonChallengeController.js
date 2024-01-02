@@ -12,6 +12,7 @@ const addCommonChallenge = async (req, res, next) => {
             commonChallengeData.challenge_type,
             commonChallengeData.start_date,
             commonChallengeData.end_date,
+            commonChallengeData.xp_points,
             );
         const commonChallengeRef = await db.collection('CommonChallenge').add(JSON.parse(JSON.stringify(commonChallenge)));
         console.log(JSON.parse(JSON.stringify(commonChallenge)))

@@ -6,6 +6,7 @@ const addGoal = async (req, res, next) => {
     try {
         const goalData = req.body;
         const userID = req.user.id;
+        console.log('user Id'+userID)
         // Create a new User instance using the data from the request body
         const goal = new Goals(
             goalData.goal_id,
