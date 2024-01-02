@@ -23,7 +23,7 @@ const manageSession = async (req, res, next) => {
             goalSessionData = goalSession.docs[0].data();
         }
       
-        if(!goalSessionData || (goalSessionData.created_at != new Date().toLocaleDateString('en-US')) ){
+        if(!goalSessionData){
             console.log("creating new reord")
             let remainingTime = goalData.total_time - spentTime
             if(remainingTime<0){
@@ -55,9 +55,21 @@ const manageSession = async (req, res, next) => {
                 const sessionObj =  await db.collection('GoalSession').doc(sessionId[0]);
                 
                 await sessionObj.update(exsistingSession);
-                res.send('User record updated successfuly'); 
+                res.send('session record updated successfuly'); 
             }else{
-                res.send('paasing to another date'); 
+                let remainingTime = goalData.total_time - spentTime
+                if(remainingTime<0){
+                    remainingTime = 0
+                }
+                const newGoalSession = new GoalSessions(
+                    goalIDs[0],
+                    spentTime,
+                    remainingTime,
+                    new Date().toLocaleDateString('en-US'),
+                    1,
+                    );
+                const sessionResponse = await db.collection('GoalSession').add(JSON.parse(JSON.stringify(newGoalSession)));
+                res.send(`creating new session record for new date  ${sessionResponse.id}`); 
             }
 
                
