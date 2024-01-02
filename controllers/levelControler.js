@@ -5,10 +5,11 @@ const Level = require('../models/level');
 const addLevel = async (req, res) => {   
     try {
         const newLevelData = req.body;
+        console.log(newLevelData)
         const newLevel = new Level(
             newLevelData.level_id, 
+            newLevelData.level_name, 
             newLevelData.xp_points, 
-            newLevelData.level_challenge_id, 
             newLevelData.unlockable_item_ids
             );
         const levelRef = await db.collection('Levels').add(JSON.parse(JSON.stringify(newLevel)));
