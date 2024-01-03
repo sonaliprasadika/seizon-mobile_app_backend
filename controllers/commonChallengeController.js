@@ -5,6 +5,7 @@ const CommonChallenge = require('../models/commonChallenge');
 const addCommonChallenge = async (req, res, next) => {
     try {
         const commonChallengeData = req.body;
+        console.log(commonChallengeData)
         // Create a new User instance using the data from the request body
         const commonChallenge = new CommonChallenge(
             commonChallengeData.challenge_id,
@@ -12,6 +13,8 @@ const addCommonChallenge = async (req, res, next) => {
             commonChallengeData.challenge_type,
             commonChallengeData.start_date,
             commonChallengeData.end_date,
+            commonChallengeData.challenge_description,
+            commonChallengeData.duration,
             commonChallengeData.xp_points,
             );
         const commonChallengeRef = await db.collection('CommonChallenge').add(JSON.parse(JSON.stringify(commonChallenge)));

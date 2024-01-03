@@ -26,13 +26,29 @@ const userRegister = async (req, res, next) => {
             userData.total_steps
         );
 
-        const usersCollection = await db.collection('Users'); // Replace 'users' with your actual collection name
+        const usersCollection = await db.collection('Users'); 
         const querySnapshot = await usersCollection.where('email', '==', userData.email).get();
     
         if (querySnapshot.empty) {
-            // User with the provided email exists
             const userResponse = await usersCollection.add(JSON.parse(JSON.stringify(user)));
-        
+
+            const levelRef= await db.collection('Levels').where('level_name', '==', 'Level_1').get();
+            const lowerLevelId = levelRef.docs.map(doc => doc.id);
+
+            const levelChallengesRef = await db.collection('LevelChallenge').where('level_id', '==', lowerLevelId[0]).get()
+            const levelChallengeData = levelChallengesRef.docs[0].data();
+            const levelChallengeIds = levelChallengesRef.docs.map(doc=>doc.id)
+
+            for (const challengeID of levelChallengeIds) {
+                await db.collection('UserChallenge').add({
+                    user_id: userResponse.id,
+                    externel_challenge_id: challengeID,
+                    challenge_progress: 'INCOMPLETE',
+                    remaining_time: levelChallengeData.duration,
+                    challenge_type: levelChallengeData.challenge_type,
+                });
+            }
+                   
             var token = jwt.sign({ id: userResponse.id }, process.env.ACCESS_TOKEN_SECRET);
             const userDoc = await userResponse.get();
             const data = userDoc.data();
