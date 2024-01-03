@@ -23,7 +23,8 @@ const userRegister = async (req, res, next) => {
             userData.gender,
             hashedPassword,
             userData.user_level,
-            userData.total_steps
+            userData.total_steps,
+            userData.xp_points
         );
 
         const usersCollection = await db.collection('Users'); 
@@ -47,6 +48,7 @@ const userRegister = async (req, res, next) => {
                     challenge_progress: 'INCOMPLETE',
                     remaining_time: levelChallengeData.data().duration,
                     challenge_type: levelChallengeData.data().challenge_type,
+                    xp_points: levelChallengeData.data().xp_points,
                 });
             }
 
@@ -61,6 +63,7 @@ const userRegister = async (req, res, next) => {
                     challenge_progress: 'INCOMPLETE',
                     remaining_time: commonChallengeData.data().duration,
                     challenge_type: commonChallengeData.data().challenge_type,
+                    xp_points: commonChallengeData.data().xp_points,
                 });
             }
 

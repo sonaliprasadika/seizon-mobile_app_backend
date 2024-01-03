@@ -11,7 +11,8 @@ class User {
         gender, 
         password, 
         user_level, 
-        total_steps
+        total_steps,
+        xp_points
         ) {
 
             // Validation for username: Should be a non-empty string
@@ -42,6 +43,7 @@ class User {
             this.password = password;
             this.user_level = user_level;
             this.total_steps = total_steps;
+            this.xp_points = xp_points;
     }
 
 }
