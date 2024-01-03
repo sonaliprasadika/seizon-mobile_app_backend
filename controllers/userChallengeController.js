@@ -16,8 +16,7 @@ const addUserChallenge = async (req, res, next) => {
             userID,
             userChallengeData.externel_challenge_id,
             userChallengeData.challenge_progress,
-            userChallengeData.completed_steps,
-            userChallengeData.completed_duration,
+            userChallengeData.remaining_time,
             );
         const userChallengeRef = await db.collection('UserChallenge').add(JSON.parse(JSON.stringify(userChallenge)));
         console.log(JSON.parse(JSON.stringify(userChallenge)))
