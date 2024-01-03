@@ -36,18 +36,34 @@ const userRegister = async (req, res, next) => {
             const lowerLevelId = levelRef.docs.map(doc => doc.id);
 
             const levelChallengesRef = await db.collection('LevelChallenge').where('level_id', '==', lowerLevelId[0]).get()
-            const levelChallengeData = levelChallengesRef.docs[0].data();
             const levelChallengeIds = levelChallengesRef.docs.map(doc=>doc.id)
 
             for (const challengeID of levelChallengeIds) {
+                const levelRef =  await db.collection('LevelChallenge').doc(challengeID);
+                const levelChallengeData = await levelRef.get();
                 await db.collection('UserChallenge').add({
                     user_id: userResponse.id,
                     externel_challenge_id: challengeID,
                     challenge_progress: 'INCOMPLETE',
-                    remaining_time: levelChallengeData.duration,
-                    challenge_type: levelChallengeData.challenge_type,
+                    remaining_time: levelChallengeData.data().duration,
+                    challenge_type: levelChallengeData.data().challenge_type,
                 });
             }
+
+            const commonChallengesRef = await db.collection('CommonChallenge').get()
+            const commoChallengeIds = commonChallengesRef.docs.map(doc=>doc.id)
+            for (const challengeID of commoChallengeIds) {
+                const CommonChallengeRef =  await db.collection('CommonChallenge').doc(challengeID);
+                const commonChallengeData = await CommonChallengeRef.get();
+                await db.collection('UserChallenge').add({
+                    user_id: userResponse.id,
+                    externel_challenge_id: challengeID,
+                    challenge_progress: 'INCOMPLETE',
+                    remaining_time: commonChallengeData.data().duration,
+                    challenge_type: commonChallengeData.data().challenge_type,
+                });
+            }
+
                    
             var token = jwt.sign({ id: userResponse.id }, process.env.ACCESS_TOKEN_SECRET);
             const userDoc = await userResponse.get();
