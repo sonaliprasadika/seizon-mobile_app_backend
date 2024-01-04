@@ -1,6 +1,6 @@
 'use strict';
 const db = require('../config/db');
-const GoalSessions = require('../models/GoalSessions');
+const GoalSessions = require('../models/goalSessions');
 
 const manageSession = async (req, res, next) => {
     const spentTime = req.body.spent_time;
