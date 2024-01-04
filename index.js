@@ -14,7 +14,8 @@ const swagger = require('./config/swagger');
 const FriendChallenge = require('./models/friendChallenge');
 const friendChallengeRoutes = require('./routes/friendChallenge-routes');
 const commonChallengeRoutes = require('./routes/commonChallenge-routes');
-const userChallengeRoutes = require('./routes/userChallenge-routes')
+const userChallengeRoutes = require('./routes/userChallenge-routes');
+const sessionRoutes = require('./routes/sessionRoutes');
 const mountainRoutes = require('./routes/mountain-routes')
 const userMountainRoutes = require('./routes/userMountain-routes')
 const friendsRoutes = require('./routes/friends-routes')
@@ -47,4 +48,6 @@ app.use('/api', LevelChallengeRoutes.routes);
 app.use('/api', friendChallengeRoutes.routes);
 app.use('/api', commonChallengeRoutes.routes);
 app.use('/api', userChallengeRoutes.routes);
+app.use('/api', sessionRoutes.routes);
 app.listen(PORT, () => console.log('App is listening on url http://'+HOST+':' + PORT));
+module.exports = {app}

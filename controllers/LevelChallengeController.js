@@ -15,6 +15,7 @@ const addLevelChallenge = async (req, res, next) => {
             levelChallengeData.level_id,
             levelChallengeData.challenge_description,
             levelChallengeData.duration,
+            levelChallengeData.xp_points,
             );
         const levelChallengeRef = await db.collection('LevelChallenge').add(JSON.parse(JSON.stringify(levelChallenge)));
         console.log(JSON.parse(JSON.stringify(levelChallenge)))

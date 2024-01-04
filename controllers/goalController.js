@@ -6,6 +6,7 @@ const addGoal = async (req, res, next) => {
     try {
         const goalData = req.body;
         const userID = req.user.id;
+        console.log('user Id'+userID)
         // Create a new User instance using the data from the request body
         const goal = new Goals(
             goalData.goal_id,
@@ -15,6 +16,7 @@ const addGoal = async (req, res, next) => {
             goalData.steps_per_week,
             goalData.days,
             goalData.calories_to_burn,
+            goalData.total_time,
             );
         const goalRef = await db.collection('Goals').add(JSON.parse(JSON.stringify(goal)));
         console.log(JSON.parse(JSON.stringify(goal)))

@@ -23,16 +23,51 @@ const userRegister = async (req, res, next) => {
             userData.gender,
             hashedPassword,
             userData.user_level,
-            userData.total_steps
+            userData.total_steps,
+            userData.xp_points
         );
 
-        const usersCollection = await db.collection('Users'); // Replace 'users' with your actual collection name
+        const usersCollection = await db.collection('Users'); 
         const querySnapshot = await usersCollection.where('email', '==', userData.email).get();
     
         if (querySnapshot.empty) {
-            // User with the provided email exists
             const userResponse = await usersCollection.add(JSON.parse(JSON.stringify(user)));
-        
+
+            const levelRef= await db.collection('Levels').where('level_name', '==', 'Level_1').get();
+            const lowerLevelId = levelRef.docs.map(doc => doc.id);
+
+            const levelChallengesRef = await db.collection('LevelChallenge').where('level_id', '==', lowerLevelId[0]).get()
+            const levelChallengeIds = levelChallengesRef.docs.map(doc=>doc.id)
+
+            for (const challengeID of levelChallengeIds) {
+                const levelRef =  await db.collection('LevelChallenge').doc(challengeID);
+                const levelChallengeData = await levelRef.get();
+                await db.collection('UserChallenge').add({
+                    user_id: userResponse.id,
+                    externel_challenge_id: challengeID,
+                    challenge_progress: 'INCOMPLETE',
+                    remaining_time: levelChallengeData.data().duration,
+                    challenge_type: levelChallengeData.data().challenge_type,
+                    xp_points: levelChallengeData.data().xp_points,
+                });
+            }
+
+            const commonChallengesRef = await db.collection('CommonChallenge').get()
+            const commoChallengeIds = commonChallengesRef.docs.map(doc=>doc.id)
+            for (const challengeID of commoChallengeIds) {
+                const CommonChallengeRef =  await db.collection('CommonChallenge').doc(challengeID);
+                const commonChallengeData = await CommonChallengeRef.get();
+                await db.collection('UserChallenge').add({
+                    user_id: userResponse.id,
+                    externel_challenge_id: challengeID,
+                    challenge_progress: 'INCOMPLETE',
+                    remaining_time: commonChallengeData.data().duration,
+                    challenge_type: commonChallengeData.data().challenge_type,
+                    xp_points: commonChallengeData.data().xp_points,
+                });
+            }
+
+                   
             var token = jwt.sign({ id: userResponse.id }, process.env.ACCESS_TOKEN_SECRET);
             const userDoc = await userResponse.get();
             const data = userDoc.data();
