@@ -16,6 +16,11 @@ const friendChallengeRoutes = require('./routes/friendChallenge-routes');
 const commonChallengeRoutes = require('./routes/commonChallenge-routes');
 const userChallengeRoutes = require('./routes/userChallenge-routes');
 const sessionRoutes = require('./routes/sessionRoutes');
+const mountainRoutes = require('./routes/mountain-routes')
+const userMountainRoutes = require('./routes/userMountain-routes')
+const friendsRoutes = require('./routes/friends-routes')
+const baseCampRoutes = require('./routes/baseCamp-routes')
+const userBaseCampRoutes = require('./routes/userBaseCamp-routes')
 
 dotenv.config();
 const {PORT,HOST} = process.env
@@ -32,6 +37,11 @@ app.use(authMiddleware);
 app.use('/api', userRoutes.routes);
 app.use('/api', goalRoutes.routes);
 app.use('/api', userAvatarRoutes.routes);
+app.use('/api', mountainRoutes.routes);
+app.use('/api', userMountainRoutes.routes);
+app.use('/api', friendsRoutes.routes);
+app.use('/api', baseCampRoutes.routes);
+app.use('/api', userBaseCampRoutes.routes);
 app.use('/api', levelRoutes.routes);
 app.use('/api', UserLevelRoutes.routes);
 app.use('/api', LevelChallengeRoutes.routes);
