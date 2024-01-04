@@ -20,8 +20,6 @@ const createMountain = async (req, res, next) => {
 
         // Update the same record to include the received doc ID
         await db.collection('Mountains').doc(mountainRef.id).update({
-            // Add the fields you want to update with the doc ID
-            // For example:
             doc_id: mountainRef.id
         });
 
