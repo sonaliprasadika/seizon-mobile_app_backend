@@ -1,14 +1,18 @@
+'use strict';
 const firebase = require('firebase');
-// const config = require('./config');
+const dotenv = require('dotenv');
+
+dotenv.config();
+console.log(process.env.PROJECT_ID)
 
 const firebaseConfig = {
-    apiKey: "AIzaSyD-vMTV6aYNsJD7eQH7AEQMV2TlNOk19Jc",
-    authDomain: "seizon-app.firebaseapp.com",
-    projectId: "seizon-app",
-    storageBucket: "seizon-app.appspot.com",
-    messagingSenderId: "900874151540",
-    appId: "1:900874151540:web:97dcda280997e103929321",
-    measurementId: "G-378H7PP3HY"
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    projectId: process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDER_ID,
+    appId: process.env.APP_ID,
+    measurementId: process.env.MEASUREMENT_ID
   };
 
 firebase.initializeApp(firebaseConfig);
